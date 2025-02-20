@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Listings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+   <!-- Navbar -->
+   <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">Car Predictor</a>
+        
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-blue-600 focus:outline-none" id="menu-btn">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+            </svg>
+        </button>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex space-x-6">
+            <a href="{{ url_for('home') }}" class="hover:text-blue-600">Home</a>
+            <a href="{{ url_for('car') }}" class="hover:text-blue-600">Cars</a>
+            <a href="{{ url_for('about') }}" class="hover:text-blue-600">About Us</a>
+            <a href="{{ url_for('contact') }}" class="hover:text-blue-600">Contact Us</a>
+            <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Become a Seller</a>
+        </div>
+    </div>
+</nav>
+
+    <!-- Car Listings -->
+    <section class="container mx-auto mt-20 p-6">
+        <h2 class="text-3xl font-bold text-center">Car Listings</h2>
+        <div id="car-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6"></div>
+        
+        <!-- Pagination Controls -->
+        <div class="flex justify-center mt-8">
+            <button id="prevPage" class="bg-blue-600 text-white px-4 py-2 mx-2 rounded disabled:opacity-50" disabled>Previous</button>
+            <span id="pageNumber" class="text-lg font-semibold px-4 py-2">1</span>
+            <button id="nextPage" class="bg-blue-600 text-white px-4 py-2 mx-2 rounded">Next</button>
+        </div>
+    </section>
+
+    <script>
+        const carsPerPage = 60;
+        let currentPage = 1;
+        let totalPages = 100; // Default, will be updated dynamically
+
+        async function fetchCarImages() {
+            const API_KEY = '48956942-b8756c0f5361200fb2260a422';
+            const response = await fetch(`https://pixabay.com/api/?key=${API_KEY}&q=car&per_page=${carsPerPage}&image_type=photo`);
+            const data = await response.json();
+            return data.hits.map(hit => hit.webformatURL);
+        }
+
+        async function renderCars() {
+            const carContainer = document.getElementById("car-container");
+            carContainer.innerHTML = "";
+
+            const images = await fetchCarImages();
+            const start = (currentPage - 1) * carsPerPage;
+            const end = start + carsPerPage;
+
+            const cars = Array.from({ length: carsPerPage }, (_, i) => ({
+                name: `Car Model ${start + i + 1}`,
+                price: `$${(Math.random() * 50000 + 20000).toFixed(2)}`
+            }));
+
+            cars.forEach((car, index) => {
+                const card = document.createElement("div");
+                card.className = "bg-white p-4 shadow-lg rounded-lg text-center";
+                card.innerHTML = `
+                    <img src="${images[index % images.length]}" class="w-full h-40 object-cover rounded">
+                    <h3 class="mt-4 text-lg font-semibold">${car.name}</h3>
+                    <p class="text-gray-600">${car.price}</p>
+                `;
+                carContainer.appendChild(card);
+            });
+
+            document.getElementById("pageNumber").textContent = currentPage;
+            document.getElementById("prevPage").disabled = currentPage === 1;
+            document.getElementById("nextPage").disabled = currentPage === totalPages;
+        }
+
+        document.getElementById("prevPage").addEventListener("click", () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderCars();
+            }
+        });
+
+        document.getElementById("nextPage").addEventListener("click", () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderCars();
+            }
+        });
+
+        renderCars();
+
+        const menuBtn = document.getElementById("menu-btn");
+    const mobileMenu = document.createElement("div");
+    
+    mobileMenu.id = "mobile-menu";
+    mobileMenu.classList.add(
+        "fixed", "top-0", "left-0", "w-64", "h-full", "bg-white", "shadow-lg",
+        "transform", "-translate-x-full", "transition-transform", "duration-300", "z-20", "p-6"
+    );
+
+    document.body.appendChild(mobileMenu);
+
+    // Close Button
+    const closeMenu = document.createElement("button");
+    closeMenu.innerHTML = `<svg class='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path>
+                          </svg>`;
+    closeMenu.classList.add("absolute", "top-4", "right-4", "text-gray-600");
+    closeMenu.id = "close-menu";
+    mobileMenu.appendChild(closeMenu);
+
+    // Navigation Links for Mobile Menu
+    const navLinks = [
+        { text: "Home", url: "{{ url_for('home') }}" },
+        { text: "Cars", url: "{{ url_for('car') }}" },
+        { text: "About Us", url: "{{ url_for('about') }}" },
+        { text: "Contact Us", url: "{{ url_for('contact') }}" },
+        { text: "Become a Seller", url: "{{ url_for('login', user_type='seller') }}", button: true }
+    ];
+
+    navLinks.forEach(link => {
+        const a = document.createElement("a");
+        a.href = link.url;
+        a.textContent = link.text;
+        a.classList.add("block", "py-2", "px-4", "text-gray-700", "hover:bg-blue-100", "rounded");
+
+        if (link.button) {
+            a.classList.add("bg-blue-600", "text-white", "px-4", "py-2", "rounded", "mt-4", "inline-block");
+        }
+
+        mobileMenu.appendChild(a);
+    });
+
+    // Open & Close Menu
+    menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.remove("-translate-x-full");
+    });
+
+    closeMenu.addEventListener("click", () => {
+        mobileMenu.classList.add("-translate-x-full");
+    });
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
