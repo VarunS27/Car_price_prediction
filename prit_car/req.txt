@@ -10,5 +10,3 @@
 (5) the whole code is with flask install it
 
 (6) make account on (https://pixabay.com/api/docs/) to generate images
-
-(7) switch on python app and run it don't open html files some results can be different 
