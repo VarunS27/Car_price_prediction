@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Car Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">🚗 Car Predictor</a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-blue-600 focus:outline-none" id="menu-btn">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('home') }}" class="hover:text-blue-600">Home</a>
+                <a href="{{ url_for('car') }}" class="hover:text-blue-600">Cars</a>
+                <a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a>
+                <a href="{{ url_for('about') }}" class="hover:text-blue-600">About Us</a>
+                <a href="{{ url_for('contact') }}" class="hover:text-blue-600">Contact Us</a>
+                <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Become a Seller</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <div class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-20" id="mobile-menu">
+        <button class="absolute top-4 right-4 text-gray-600" id="close-menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-16 space-y-6 px-6 text-lg">
+            <li><a href="{{ url_for('home') }}" class="block hover:text-blue-600">Home</a></li>
+            <li><a href="{{ url_for('car') }}" class="block hover:text-blue-600">Cars</a></li>
+            <li><a href="{{ url_for('form') }}" class="block hover:text-blue-600">Price Prediction calculator</a></li>
+        
+            <li><a href="{{ url_for('about') }}" class="block hover:text-blue-600">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}" class="block hover:text-blue-600">Contact Us</a></li>
+            <li><a href="{{ url_for('login', user_type='seller') }}" class="block bg-blue-600 text-white px-4 py-2 rounded text-center">Become a Seller</a></li>
+        </ul>
+    </div>
+    <!-- Hero Section -->
+    <section class="relative bg-cover bg-center h-80 flex items-center justify-center text-white"
+        style="background-image: url('../static/image/image2.png');">
+        <div class="bg-black bg-opacity-50 p-8 rounded-lg text-center">
+            <h1 class="text-5xl font-extrabold">About Us</h1>
+            <p class="mt-4 text-lg">Predicting car prices with AI-driven precision</p>
+        </div>
+    </section>
+
+    <!-- About Us Content -->
+    <section class="py-16 px-6 max-w-5xl mx-auto text-center">
+        <h2 class="text-4xl font-bold text-gray-800">Who We Are</h2>
+        <p class="mt-4 text-gray-700 text-lg leading-relaxed">
+            At <span class="text-blue-500 font-semibold">Car Prediction</span>, we use cutting-edge <span class="font-semibold text-gray-900">Artificial Intelligence</span> 
+            and <span class="text-blue-500 font-semibold">Machine Learning</span> to provide accurate car price predictions. 
+            Whether you're a buyer or a seller, our insights ensure that you make the right financial decisions based on real-time data.
+        </p>
+    </section>
+
+    <!-- Our Process Section -->
+    <section class="bg-blue-50 py-16">
+        <div class="max-w-5xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold text-blue-600">How It Works</h2>
+            <p class="mt-4 text-gray-700">We follow a structured approach to ensure accurate predictions:</p>
+
+            <div class="mt-8 grid md:grid-cols-3 gap-6">
+                <div class="bg-white p-6 shadow-md rounded-lg">
+                    <h3 class="text-2xl font-semibold text-blue-600">1. Data Collection</h3>
+                    <p class="text-gray-700 mt-2">We gather data from multiple sources, including car marketplaces, dealer listings, and historical sales.</p>
+                </div>
+                <div class="bg-white p-6 shadow-md rounded-lg">
+                    <h3 class="text-2xl font-semibold text-blue-600">2. AI Model Analysis</h3>
+                    <p class="text-gray-700 mt-2">Our AI models analyze vehicle age, condition, location, and market demand for accurate pricing.</p>
+                </div>
+                <div class="bg-white p-6 shadow-md rounded-lg">
+                    <h3 class="text-2xl font-semibold text-blue-600">3. Price Estimation</h3>
+                    <p class="text-gray-700 mt-2">We provide precise car price predictions, empowering buyers and sellers with data-driven insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call-to-Action -->
+    <section class="py-12 text-center">
+        <h2 class="text-3xl font-bold text-gray-800">Get Started Today</h2>
+        <p class="mt-2 text-gray-600">Make smarter buying and selling decisions with AI-powered predictions.</p>
+        <a href="{{ url_for('contact') }}" class="mt-4 inline-block bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold shadow-md hover:bg-blue-700 transition duration-300">
+            Contact Us
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-6 mt-10">
+        <p>&copy; 2025 Car Price Prediction. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenu = document.getElementById("close-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.remove("-translate-x-full");
+        });
+
+        closeMenu.addEventListener("click", () => {
+            mobileMenu.classList.add("-translate-x-full");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Car Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {},
+            }
+        };
+    </script>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">🚗 Car Predictor</a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-blue-600 focus:outline-none" id="menu-btn">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('home') }}" class="hover:text-blue-600">Home</a>
+                <a href="{{ url_for('car') }}" class="hover:text-blue-600">Cars</a>
+                <a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a>
+                <a href="{{ url_for('about') }}" class="hover:text-blue-600">About Us</a>
+                <a href="{{ url_for('contact') }}" class="hover:text-blue-600">Contact Us</a>
+                <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Become a Seller</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <div class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-20" id="mobile-menu">
+        <button class="absolute top-4 right-4 text-gray-600" id="close-menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-16 space-y-6 px-6 text-lg">
+            <li><a href="{{ url_for('home') }}" class="block hover:text-blue-600">Home</a></li>
+            <li><a href="{{ url_for('car') }}" class="block hover:text-blue-600">Cars</a></li>
+            <li><a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a></li>
+
+            <li><a href="{{ url_for('about') }}" class="block hover:text-blue-600">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}" class="block hover:text-blue-600">Contact Us</a></li>
+            <li><a href="{{ url_for('login', user_type='seller') }}" class="block bg-blue-600 text-white px-4 py-2 rounded text-center">Become a Seller</a></li>
+        </ul>
+    </div>
+
+    <!-- Contact Us Section -->
+    <section class="py-20 px-6 mt-16">
+        <h2 class="text-3xl font-bold text-center text-gray-800">Contact Us</h2>
+        <p class="text-center text-gray-600 mt-2">We'd love to hear from you! Fill out the form below.</p>
+        
+        <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6 mt-6">
+            <form action="{{ url_for('contact') }}" method="POST">
+                <label class="block text-gray-700 font-semibold mb-2">Your Name</label>
+                <input type="text" name="name" placeholder="John Doe" class="w-full p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-blue-400">
+
+                <label class="block text-gray-700 font-semibold mb-2">Your Email</label>
+                <input type="email" name="email" placeholder="example@email.com" class="w-full p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-blue-400">
+
+                <label class="block text-gray-700 font-semibold mb-2">Your Message</label>
+                <textarea name="message" placeholder="Type your message here..." class="w-full p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-blue-400" rows="4"></textarea>
+
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition duration-300">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-4 mt-10">
+        <p>&copy; 2025 Car Price Prediction. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenu = document.getElementById("close-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.remove("-translate-x-full");
+        });
+
+        closeMenu.addEventListener("click", () => {
+            mobileMenu.classList.add("-translate-x-full");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white p-6 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        <h2 class="text-2xl font-bold text-center">Car Dashboard</h2>
+        <nav class="mt-6">
+            <ul class="space-y-4">
+                <li><a href="{{ url_for('dashboard') }}" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Dashboard</a></li>
+                <li><a href="{{ url_for('add') }}" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Add Cars</a></li>
+                <li><a href="#" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Settings</a></li>
+                <li><a href="#" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Profile</a></li>
+                <li><a href="{{ url_for('home') }}" class="block px-4 py-3 bg-red-600 rounded-lg hover:bg-red-500">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="flex-1 p-8 ml-0 md:ml-64 transition-all duration-300">
+        <button id="hamburger" class="text-gray-800 text-2xl absolute top-6 left-6 md:hidden">&#9776;</button>
+        <h1 class="text-4xl font-bold mb-6">Car Listings</h1>
+        
+        <!-- Car Table -->
+        <div class="overflow-x-auto">
+            <table class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                <thead class="bg-gray-800 text-white">
+                    <tr>
+                        <th class="p-4">Image</th>
+                        <th class="p-4">Car Name</th>
+                        <th class="p-4">Owner Count</th>
+                        <th class="p-4">Number Plate</th>
+                        <th class="p-4">Year of Purchase</th>
+                        <th class="p-4">Purchase Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b hover:bg-gray-100">
+                        <td class="p-4"><img src="https://source.unsplash.com/100x60/?car" alt="Car Image" class="rounded-md"></td>
+                        <td class="p-4">Toyota Camry</td>
+                        <td class="p-4">2</td>
+                        <td class="p-4">MH12 AB 1234</td>
+                        <td class="p-4">2018</td>
+                        <td class="p-4">₹8,50,000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    
+    <script>
+        const sidebar = document.getElementById("sidebar");
+        document.getElementById("hamburger").addEventListener("click", () => {
+            sidebar.classList.toggle("-translate-x-full");
+        });
+    </script>
+</body>
+</html>
