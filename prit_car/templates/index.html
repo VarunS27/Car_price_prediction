@@ -7,93 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
-
-    <!-- Navbar -->
+    
+    <!-- ✅ Navbar -->
     <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
         <div class="container mx-auto flex justify-between items-center">
-            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">Car Predictor</a>
-            
-            <!-- Mobile Menu Button -->
-            <button class="md:hidden text-blue-600 focus:outline-none" id="menu-btn">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                </svg>
-            </button>
-
-            <!-- Desktop Menu -->
+            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">🚗 Car Predictor</a>
             <div class="hidden md:flex space-x-6">
                 <a href="{{ url_for('home') }}" class="hover:text-blue-600">Home</a>
                 <a href="{{ url_for('car') }}" class="hover:text-blue-600">Cars</a>
+                <a href="{{ url_for('form') }}" class="hover:text-blue-600">Price Prediction calculator</a>
                 <a href="{{ url_for('about') }}" class="hover:text-blue-600">About Us</a>
                 <a href="{{ url_for('contact') }}" class="hover:text-blue-600">Contact Us</a>
-                <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Become a Seller</a>
+                <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Become a Seller</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <header class="relative flex items-center justify-center h-screen bg-cover bg-center" style="background-image: url('/static/image/image.png')">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="relative text-center text-white">
-            <h1 class="text-5xl font-bold">Find the Best Car Prices</h1>
-            <p class="mt-4 text-lg">Get accurate price predictions for your dream car</p>
-            <a href="{{ url_for('car') }}" class="mt-6 inline-block bg-blue-600 text-white px-6 py-3 rounded-lg text-lg">Explore Now</a>
+    <!-- ✅ Hero Section -->
+    <header class="flex items-center justify-center h-screen bg-blue-500 text-white text-center">
+        <div>
+            <h1 class="text-5xl font-bold">Welcome to Car Price Predictor</h1>
+            <p class="mt-4 text-lg">Find the best price predictions for your dream car.</p>
+            <a href="{{ url_for('form') }}" class="mt-6 inline-block bg-white text-blue-600 px-6 py-3 rounded-lg text-lg hover:bg-gray-200 transition">Calculate Price Of Your Car</a> 
         </div>
     </header>
 
-    <!-- Featured Cars -->
-    <section class="py-12 px-6">
-        <h2 class="text-center text-3xl font-bold">Featured Cars</h2>
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            
-            {% for img in images %}
-            <div class="relative bg-white p-4 shadow-lg rounded-lg text-center group">
-                <img src="{{ img }}" class="w-full h-48 object-cover rounded">
-                <p class="mt-4 text-lg font-semibold">Estimated Price: ${{ [45000, 250000, 80000] | random }}</p>
-                
-                <!-- Hover Button -->
-                <a href="{{ url_for('car') }}" class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition duration-300">
-                    Explore Now
-                </a>
-            </div>
-            {% endfor %}
-            
-        </div>
-
-        <!-- Explore More Button -->
-        <div class="text-center mt-8">
-            <a href="{{ url_for('car') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg inline-block hover:bg-blue-700 transition">
-                Explore More Cars
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white text-center py-4 mt-10">
+    <!-- ✅ Footer -->
+    <footer class="bg-gray-900 text-white text-center py-4">
         <p>&copy; 2025 Car Price Prediction. All rights reserved.</p>
     </footer>
-
-    <!-- JavaScript for Sidebar -->
-    <script>
-        const menuBtn = document.getElementById("menu-btn");
-        const mobileMenu = document.createElement("div");
-        mobileMenu.id = "mobile-menu";
-        mobileMenu.classList.add("fixed", "top-0", "left-0", "w-64", "h-full", "bg-white", "shadow-lg", "transform", "-translate-x-full", "transition-transform", "duration-300", "z-20");
-        document.body.appendChild(mobileMenu);
-
-        const closeMenu = document.createElement("button");
-        closeMenu.innerHTML = "<svg class='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path></svg>";
-        closeMenu.classList.add("absolute", "top-4", "right-4", "text-gray-600");
-        closeMenu.id = "close-menu";
-        mobileMenu.appendChild(closeMenu);
-
-        menuBtn.addEventListener("click", () => {
-            mobileMenu.classList.remove("-translate-x-full");
-        });
-
-        closeMenu.addEventListener("click", () => {
-            mobileMenu.classList.add("-translate-x-full");
-        });
-    </script>
 </body>
 </html>
