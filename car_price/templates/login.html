@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction - Login</title>
+  
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col justify-center items-center h-screen space-y-6">
+    
+   
+
+    <!-- Authentication Form -->
+    <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold text-center mb-6">Car Price Prediction</h2>
+
+        <div class="flex justify-center space-x-4 mb-6">
+            <button id="userBtn" class="px-4 py-2 bg-blue-500 text-white rounded-lg">User</button>
+            <button id="sellerBtn" class="px-4 py-2 bg-gray-300 rounded-lg">Seller</button>
+        </div>
+
+        <!-- User Login Form -->
+        <form id="userLoginForm" class="space-y-4">
+            <h3 class="text-lg font-semibold">User Login</h3>
+            <input type="email" placeholder="Email" class="w-full p-2 border rounded" required>
+            <input type="password" placeholder="Password" class="w-full p-2 border rounded" required>
+            <button class="w-full bg-blue-500 text-white p-2 rounded">Login</button>
+            <p class="text-center text-sm cursor-pointer text-blue-600" id="showUserSignup">Create an Account</p>
+        </form>
+
+        <!-- User Signup Form -->
+        <form id="userSignupForm" class="hidden space-y-4">
+            <h3 class="text-lg font-semibold">User Signup</h3>
+            <input type="text" placeholder="Name" class="w-full p-2 border rounded" required>
+            <input type="number" placeholder="Age" class="w-full p-2 border rounded" required>
+            <input type="email" placeholder="Email" class="w-full p-2 border rounded" required>
+            <input type="password" placeholder="Password" class="w-full p-2 border rounded" required>
+            <input type="text" placeholder="Location" class="w-full p-2 border rounded" required>
+            <button class="w-full bg-blue-500 text-white p-2 rounded">Sign Up</button>
+            <p class="text-center text-sm cursor-pointer text-blue-600" id="showUserLogin">Already have an account? Login</p>
+        </form>
+
+        <!-- Seller Login Form -->
+        <form id="sellerLoginForm" class="hidden space-y-4">
+            <h3 class="text-lg font-semibold">Seller Login</h3>
+            <input type="email" placeholder="Email" class="w-full p-2 border rounded" required>
+            <input type="password" placeholder="Password" class="w-full p-2 border rounded" required>
+            <button class="w-full bg-green-500 text-white p-2 rounded">Login</button>
+            <p class="text-center text-sm cursor-pointer text-green-600" id="showSellerSignup">Create an Account</p>
+        </form>
+
+        <!-- Seller Signup Form -->
+        <form id="sellerSignupForm" class="hidden space-y-4">
+            <h3 class="text-lg font-semibold">Seller Signup</h3>
+            <input type="text" placeholder="Name" class="w-full p-2 border rounded" required>
+            <input type="text" placeholder="Location" class="w-full p-2 border rounded" required>
+            <input type="email" placeholder="Email" class="w-full p-2 border rounded" required>
+            <input type="password" placeholder="Password" class="w-full p-2 border rounded" required>
+            <input type="number" placeholder="Age" class="w-full p-2 border rounded" required>
+            <input type="text" placeholder="PAN Number" class="w-full p-2 border rounded" required>
+            <button class="w-full bg-green-500 text-white p-2 rounded">Sign Up</button>
+            <p class="text-center text-sm cursor-pointer text-green-600" id="showSellerLogin">Already have an account? Login</p>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userBtn = document.getElementById("userBtn");
+            const sellerBtn = document.getElementById("sellerBtn");
+            const userLoginForm = document.getElementById("userLoginForm");
+            const sellerLoginForm = document.getElementById("sellerLoginForm");
+            const userSignupForm = document.getElementById("userSignupForm");
+            const sellerSignupForm = document.getElementById("sellerSignupForm");
+            const showUserSignup = document.getElementById("showUserSignup");
+            const showUserLogin = document.getElementById("showUserLogin");
+            const showSellerSignup = document.getElementById("showSellerSignup");
+            const showSellerLogin = document.getElementById("showSellerLogin");
+
+            userBtn.addEventListener("click", () => {
+                userLoginForm.classList.remove("hidden");
+                sellerLoginForm.classList.add("hidden");
+                userBtn.classList.add("bg-blue-500", "text-white");
+                sellerBtn.classList.remove("bg-green-500", "text-white");
+                sellerBtn.classList.add("bg-gray-300");
+            });
+
+            sellerBtn.addEventListener("click", () => {
+                sellerLoginForm.classList.remove("hidden");
+                userLoginForm.classList.add("hidden");
+                sellerBtn.classList.add("bg-green-500", "text-white");
+                userBtn.classList.remove("bg-blue-500", "text-white");
+                userBtn.classList.add("bg-gray-300");
+            });
+
+            showUserSignup.addEventListener("click", () => {
+                userSignupForm.classList.remove("hidden");
+                userLoginForm.classList.add("hidden");
+            });
+
+            showUserLogin.addEventListener("click", () => {
+                userLoginForm.classList.remove("hidden");
+                userSignupForm.classList.add("hidden");
+            });
+
+            showSellerSignup.addEventListener("click", () => {
+                sellerSignupForm.classList.remove("hidden");
+                sellerLoginForm.classList.add("hidden");
+            });
+
+            showSellerLogin.addEventListener("click", () => {
+                sellerLoginForm.classList.remove("hidden");
+                sellerSignupForm.classList.add("hidden");
+            });
+        });
+
+        document.getElementById("sellerLoginForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        window.location.href = "{{ url_for('dashboard') }}";  
+    });
+
+    document.getElementById("sellerSignupForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        window.location.href = "{{ url_for('dashboard') }}";  
+    });
+
+    </script>
+</body>
+</html>

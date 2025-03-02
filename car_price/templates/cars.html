@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af'
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body class="bg-gray-100 text-gray-900 transition duration-300">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-primary">🚗 Car Predictor</a>
+
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-primary focus:outline-none" id="menu-btn">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('home') }}" class="hover:text-primary transition">Home</a>
+                <a href="{{ url_for('car') }}" class="hover:text-primary transition">Cars</a>
+                <a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a>
+                <a href="{{ url_for('about') }}" class="hover:text-primary transition">About Us</a>
+                <a href="{{ url_for('contact') }}" class="hover:text-primary transition">Contact Us</a>
+                <a href="{{ url_for('login', user_type='seller') }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition">Become a Seller</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-20 p-6 shadow-lg transform -translate-x-full transition-transform">
+        <button id="close-menu" class="absolute top-4 right-6 text-gray-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <nav class="mt-10 space-y-6 text-lg">
+            <a href="{{ url_for('home') }}" class="block text-gray-700 hover:text-primary">Home</a>
+            <a href="{{ url_for('car') }}" class="block text-gray-700 hover:text-primary">Cars</a>
+            <a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a>
+            <a href="{{ url_for('about') }}" class="block text-gray-700 hover:text-primary">About Us</a>
+            <a href="{{ url_for('contact') }}" class="block text-gray-700 hover:text-primary">Contact Us</a>
+            <a href="{{ url_for('login', user_type='seller') }}" class="block bg-primary text-white text-center py-2 rounded-lg hover:bg-secondary transition">Become a Seller</a>
+        </nav>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+
+        <!-- Page Title -->
+        <h1 class="text-center text-4xl font-bold text-primary mt-10">🚗 Available Cars</h1>
+
+        <!-- Car Listings -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {% for car in cars %}
+            <div class="bg-white p-6 rounded-xl shadow-lg transition-transform transform hover:-translate-y-2 hover:shadow-2xl">
+                <h3 class="text-2xl font-semibold text-gray-800">{{ car.name }}</h3>
+                <p class="text-gray-500"><strong>📅 Year:</strong> {{ car.year }}</p>
+                <p class="text-gray-500"><strong>💰 Price:</strong> ₹{{ car.selling_price }}</p>
+                <p class="text-gray-500"><strong>🚘 Kilometers Driven:</strong> {{ car.km_driven }} km</p>
+                <p class="text-gray-500"><strong>⛽ Fuel Type:</strong> {{ car.fuel }}</p>
+                <p class="text-gray-500"><strong>⚙️ Transmission:</strong> {{ car.transmission }}</p>
+                <p class="text-gray-500"><strong>🏪 Seller Type:</strong> {{ car.seller_type }}</p>
+                <p class="text-gray-500"><strong>👤 Owner:</strong> {{ car.owner }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        const menuBtn = document.getElementById("menu-btn");
+        const closeMenu = document.getElementById("close-menu");
+        const mobileMenu = document.getElementById("mobile-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.remove("-translate-x-full");
+        });
+
+        closeMenu.addEventListener("click", () => {
+            mobileMenu.classList.add("-translate-x-full");
+        });
+    </script>
+
+</body>
+</html>
