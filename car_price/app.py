@@ -3,20 +3,14 @@ import pandas as pd
 import numpy as np
 import pickle
 import os
+import gdown
 
 app = Flask(__name__)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+url = "Yhttps://drive.google.com/drive/folders/1AvyK2F_6ii2_BA90RC_bCaRZaIL6uiYw"
+output = "model.pkl"
+gdown.download(url, output, quiet=False)
 
-# Load model and dataset with absolute paths
-MODEL_PATH = os.path.join(BASE_DIR, "model.pkl")
-DATASET_PATH = os.path.join(BASE_DIR, "my live cars data.csv")
-
-if not os.path.exists(MODEL_PATH):
-    print("Error: model.pkl not found!")
-
-if not os.path.exists(DATASET_PATH):
-    print("Error: my live cars data.csv not found!")
 
 # Load the trained model
 try:
