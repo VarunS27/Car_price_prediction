@@ -7,7 +7,7 @@ import gdown
 
 app = Flask(__name__)
 
-url = "Yhttps://drive.google.com/drive/folders/1AvyK2F_6ii2_BA90RC_bCaRZaIL6uiYw"
+url = "https://drive.google.com/drive/folders/1AvyK2F_6ii2_BA90RC_bCaRZaIL6uiYw"
 output = "model.pkl"
 gdown.download(url, output, quiet=False)
 
