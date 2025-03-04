@@ -6,10 +6,10 @@ from sklearn.linear_model import LinearRegression
 
 # Load Data
 try:
-    cars_data = pd.read_csv('my live cars data.csv')
+    cars_data = pd.read_csv('cars.csv')
     print("Car Data Loaded Successfully")
 except FileNotFoundError:
-    print("Error: my live cars data.csv not found!")
+    print("Error: cars.csv not found!")
     exit()
 
 # Data Preprocessing

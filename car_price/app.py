@@ -2,14 +2,11 @@ from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import numpy as np
 import pickle
-import os
-import gdown
+
 
 app = Flask(__name__)
 
-url = "https://drive.google.com/drive/folders/1AvyK2F_6ii2_BA90RC_bCaRZaIL6uiYw"
-output = "model.pkl"
-gdown.download(url, output, quiet=False)
+
 
 
 # Load the trained model
@@ -25,10 +22,10 @@ except Exception as e:
 
 # Load car dataset (For UI display)
 try:
-    cars_data = pd.read_csv('my live cars data.csv')
+    cars_data = pd.read_csv('cars.csv')
     print("Car Data Loaded Successfully")
 except FileNotFoundError:
-    print("Error: my live cars data.csv not found!")
+    print("Error: cars.csv not found!")
     cars_data = pd.DataFrame()
 
 # Data Preprocessing
