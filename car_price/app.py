@@ -2,10 +2,29 @@ from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import numpy as np
 import pickle
+import os
 
 
 app = Flask(__name__)
 
+model_path = "model.pkl"
+with open(model_path, "rb") as f:
+    model = pickle.load(f)
+
+@app.route("/")
+def home():
+    return "Car Price Prediction API is Running!"
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.get_json()
+    df = pd.DataFrame(data)  # Ensure input data is in DataFrame format
+    prediction = model.predict(df)
+    return jsonify({"prediction": prediction.tolist()})
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 
 
