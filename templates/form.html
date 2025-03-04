@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Price Prediction</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+    <nav class="bg-white shadow-lg p-4 fixed w-full top-0 z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="{{ url_for('home') }}" class="text-2xl font-bold text-blue-600">🚗 Car Predictor</a>
+            
+            <!-- Mobile Menu Button -->
+            <button class="md:hidden text-blue-600 focus:outline-none" id="menu-btn">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{{ url_for('home') }}" class="hover:text-blue-600">Home</a>
+                <a href="{{ url_for('car') }}" class="hover:text-blue-600">Cars</a>
+                <a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a>
+                <a href="{{ url_for('about') }}" class="hover:text-blue-600">About Us</a>
+                <a href="{{ url_for('contact') }}" class="hover:text-blue-600">Contact Us</a>
+                <a href="{{ url_for('login', user_type='seller') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Become a Seller</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Sidebar -->
+    <div class="fixed top-0 left-0 w-64 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-20" id="mobile-menu">
+        <button class="absolute top-4 right-4 text-gray-600" id="close-menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        <ul class="mt-16 space-y-6 px-6 text-lg">
+            <li><a href="{{ url_for('home') }}" class="block hover:text-blue-600">Home</a></li>
+            <li><a href="{{ url_for('car') }}" class="block hover:text-blue-600">Cars</a></li>
+            <li><a href="{{ url_for('form') }}" class="hover:text-primary transition">Price Prediction calculator</a></li>
+
+            <li><a href="{{ url_for('about') }}" class="block hover:text-blue-600">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}" class="block hover:text-blue-600">Contact Us</a></li>
+            <li><a href="{{ url_for('login', user_type='seller') }}" class="block bg-blue-600 text-white px-4 py-2 rounded text-center">Become a Seller</a></li>
+        </ul>
+    </div>
+
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+        
+
+        <div class="flex justify-center">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl">
+                <h2 class="text-center text-2xl font-bold text-blue-600 mb-8">Enter Car Details</h2>
+                <form id="predict-form" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Car Brand -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Car Brand</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="name" required></select>
+                    </div>
+
+                    <!-- Year -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Year</label>
+                        <input type="number" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="year" required>
+                    </div>
+
+                    <!-- Kilometers Driven -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Kilometers Driven</label>
+                        <input type="number" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="km_driven" required>
+                    </div>
+
+                    <!-- Fuel Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Fuel Type</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="fuel">
+                            <option value="1">Diesel</option>
+                            <option value="2">Petrol</option>
+                            <option value="3">LPG</option>
+                            <option value="4">CNG</option>
+                        </select>
+                    </div>
+
+                    <!-- Seller Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Seller Type</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="seller_type">
+                            <option value="1">Dealer</option>
+                            <option value="2">Individual</option>
+                            <option value="3">Trustmark Dealer</option>
+                        </select>
+                    </div>
+
+                    <!-- Transmission -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Transmission</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="transmission">
+                            <option value="1">Manual</option>
+                            <option value="2">Automatic</option>
+                        </select>
+                    </div>
+
+                    <!-- Owner Type -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Owner Type</label>
+                        <select class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="owner">
+                            <option value="1">First Owner</option>
+                            <option value="2">Second Owner</option>
+                            <option value="3">Third Owner</option>
+                            <option value="4">Fourth & Above Owner</option>
+                            <option value="5">Test Drive Car</option>
+                        </select>
+                    </div>
+
+                    <!-- Engine Capacity -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Engine Capacity (CC)</label>
+                        <input type="number" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="engine" required>
+                    </div>
+
+                    <!-- Mileage -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mileage</label>
+                        <input type="number" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="mileage" required>
+                    </div>
+
+                    <!-- Seats -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Seats</label>
+                        <input type="number" class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500" name="seats" required>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="md:col-span-3">
+                        <button type="submit" id="submit-btn" class="w-full p-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-300">
+                            Predict Price
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Loading Overlay -->
+                <div id="loader-overlay" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
+                    <p class="text-white text-xl font-semibold">Getting Best Price...</p>
+                </div>
+
+                <!-- Result Popup -->
+                <div id="result-popup" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+                        <h3 class="text-xl font-semibold">Estimated Price: ₹<span id="predicted-price">-</span></h3>
+                        <p id="car-details" class="mt-4 text-sm text-gray-700"></p>
+                        <button id="close-popup" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-gray-900 text-white text-center py-4 mt-10">
+        <p>&copy; 2025 Car Price Prediction. All rights reserved.</p>
+    </footer>
+    <script>
+
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const closeMenu = document.getElementById("close-menu");
+
+        menuBtn.addEventListener("click", () => {
+            mobileMenu.classList.remove("-translate-x-full");
+        });
+
+        closeMenu.addEventListener("click", () => {
+            mobileMenu.classList.add("-translate-x-full");
+        });
+
+
+        $(document).ready(function () {
+            $.get("/get_brands", function (data) {
+                if (data.brands) {
+                    let brandDropdown = $('select[name="name"]');
+                    brandDropdown.empty();
+                    $.each(data.brands, function (index, brand) {
+                        brandDropdown.append($('<option></option>').attr('value', brand).text(brand));
+                    });
+                }
+            });
+        });
+
+        $("#predict-form").submit(function(event) {
+            event.preventDefault();
+            let formData = {};
+            $("#predict-form").serializeArray().forEach(item => {
+                formData[item.name] = item.value;
+            });
+
+            // Disable submit button and show loader
+            $("#submit-btn").prop("disabled", true);
+            $("#loader-overlay").removeClass("hidden");
+
+            // Set a timeout for the AJAX request
+            let requestTimeout = setTimeout(function() {
+                $("#loader-overlay").addClass("hidden");
+                $("#submit-btn").prop("disabled", false);
+                alert("Request timed out. Please try again.");
+            }, 10000); // 10 seconds
+
+            $.ajax({
+                url: "/predict",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(formData),
+                success: function(response) {
+                    clearTimeout(requestTimeout); // Clear the timeout
+                    $("#loader-overlay").addClass("hidden");
+                    $("#submit-btn").prop("disabled", false);
+                    if (response.predicted_price) {
+                        $("#predicted-price").text(response.predicted_price);
+                        // Format car details for display
+                        let carDetails = `Brand: ${formData.name}<br>Year: ${formData.year}<br>KM Driven: ${formData.km_driven}`;
+                        $("#car-details").html(carDetails);
+                        $("#result-popup").removeClass("hidden");
+                    } else {
+                        alert("Error: " + (response.error || "Unexpected error occurred."));
+                    }
+                },
+                error: function(xhr, status, error) {
+                    clearTimeout(requestTimeout); // Clear the timeout
+                    $("#loader-overlay").addClass("hidden");
+                    $("#submit-btn").prop("disabled", false);
+                    console.error("AJAX Error:", error);
+                    alert("Something went wrong. Please try again.");
+                }
+            });
+        });
+
+        $("#close-popup").click(function () {
+            $("#result-popup").addClass("hidden");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-900 text-white p-6 fixed inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300">
+        <h2 class="text-2xl font-bold text-center">Car Dashboard</h2>
+        <nav class="mt-6">
+            <ul class="space-y-4">
+                <li><a href="{{ url_for('dashboard') }}" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Dashboard</a></li>
+                <li><a href="{{ url_for('add') }}" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Add Cars</a></li>
+                <li><a href="#" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Settings</a></li>
+                <li><a href="#" class="block px-4 py-3 bg-gray-800 rounded-lg hover:bg-gray-700">Profile</a></li>
+                <li><a href="{{ url_for('home') }}" class="block px-4 py-3 bg-red-600 rounded-lg hover:bg-red-500">Logout</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="flex-1 p-8 ml-0 md:ml-64 transition-all duration-300">
+        <button id="hamburger" class="text-gray-800 text-2xl absolute top-6 left-6 md:hidden">&#9776;</button>
+        <h1 class="text-4xl font-bold mb-6">Car Listings</h1>
+        <div class="flex justify-center">
+            <button id="openModal" class="px-6 py-3 bg-blue-600 text-white rounded-md shadow-lg hover:bg-blue-700 transition">+ Add Car</button>
+        </div>
+    </main>
+    
+    <!-- Modal -->
+    <div id="carModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h2 class="text-xl font-bold mb-4">Add Car Details</h2>
+            <form id="carForm" class="space-y-4">
+                <input type="text" id="carName" placeholder="Car Name" class="w-full p-2 border rounded" required>
+                <input type="number" id="purchaseYear" placeholder="Year of Purchase" class="w-full p-2 border rounded" min="1990" max="2025" required>
+                <input type="number" id="kmd" placeholder="Kilometer Driven" class="w-full p-2 border rounded" required>
+                <select id="Fuel" class="w-full p-2 border rounded">
+                    <option>Diesel</option>
+                    <option>Petrol</option>
+                    <option>LPG</option>
+                    <option>CNG</option>
+                </select>
+                <select id="st" class="w-full p-2 border rounded">
+                    <option>Individual</option>
+                    <option>Dealer</option>
+                    <option>Trustmark Dealer</option>
+                </select>
+                <select id="transmission" class="w-full p-2 border rounded">
+                    <option>Manual</option>
+                    <option>Automatic</option>
+                </select>
+                <input type="number" id="milage" placeholder="Car Mileage" class="w-full p-2 border rounded" required>
+                <input type="number" id="engine" placeholder="Engine CC" class="w-full p-2 border rounded" required>
+                <select id="seatCount" class="w-full p-2 border rounded">
+                    <option>Choose no of seats..</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                </select>
+                <div class="flex justify-between">
+                    <button type="button" id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById("openModal").addEventListener("click", () => {
+            document.getElementById("carModal").classList.remove("hidden");
+        });
+        
+        document.getElementById("closeModal").addEventListener("click", () => {
+            document.getElementById("carModal").classList.add("hidden");
+        });
+        
+        const sidebar = document.getElementById("sidebar");
+        document.getElementById("hamburger").addEventListener("click", () => {
+            sidebar.classList.toggle("-translate-x-full");
+        });
+    </script>
+</body>
+</html>
