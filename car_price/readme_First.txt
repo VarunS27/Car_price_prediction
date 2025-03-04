@@ -1,4 +1,4 @@
-(1) install all dependencies
+(1) install all dependencies like pandas,sklearn, pickel, flask, pickle, numpy..... this are must on your device
 
 (2) Don't change the routes
 
