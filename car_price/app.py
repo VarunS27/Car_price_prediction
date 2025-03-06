@@ -1,35 +1,18 @@
-from flask import Flask, render_template, request, jsonify
+import os
+import pickle
 import pandas as pd
 import numpy as np
-import pickle
-import os
-
+from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
-
-model_path = "model.pkl"
-with open(model_path, "rb") as f:
-    model = pickle.load(f)
-
-@app.route("/")
-def home():
-    return "Car Price Prediction API is Running!"
-
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = request.get_json()
-    df = pd.DataFrame(data)  # Ensure input data is in DataFrame format
-    prediction = model.predict(df)
-    return jsonify({"prediction": prediction.tolist()})
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
-
+CORS(app)
 
 # Load the trained model
+model_path = os.path.join(os.path.dirname(__file__), "model.pkl")
 try:
-    model = pickle.load(open("model.pkl", "rb"))
+    with open(model_path, "rb") as f:
+        model = pickle.load(f)
     print("Model Loaded Successfully")
 except FileNotFoundError:
     print("Error: model.pkl not found!")
@@ -38,9 +21,10 @@ except Exception as e:
     print(f"Error loading model: {e}")
     model = None
 
-# Load car dataset (For UI display)
+# Load car dataset
+csv_path = os.path.join(os.path.dirname(__file__), "cars.csv")
 try:
-    cars_data = pd.read_csv('cars.csv')
+    cars_data = pd.read_csv(csv_path)
     print("Car Data Loaded Successfully")
 except FileNotFoundError:
     print("Error: cars.csv not found!")
@@ -53,7 +37,7 @@ if not cars_data.empty:
     cars_data.drop_duplicates(inplace=True)
 
     # Extract car brands
-    cars_data['brand'] = cars_data['name'].apply(lambda x: x.split(' ')[0])  
+    cars_data['brand'] = cars_data['name'].apply(lambda x: x.split(' ')[0])
     brand_mapping = {brand: idx + 1 for idx, brand in enumerate(cars_data['brand'].unique())}
     brand_reverse_mapping = {v: k for k, v in brand_mapping.items()}
 
@@ -116,43 +100,31 @@ def get_brands():
     brands = list(brand_mapping.keys()) if not cars_data.empty else []
     return jsonify({'brands': brands})
 
+# Prediction API
 @app.route('/predict', methods=['POST'])
 def predict():
     if model is None:
         return jsonify({'error': 'Model not loaded. Check model.pkl'}), 500
 
     try:
-        data = request.json
+        data = request.get_json()  # Ensure JSON format
         print("Received Data:", data)
 
-        # Validate input data
+        # Required fields for the model
         required_fields = ['name', 'year', 'km_driven', 'fuel', 'seller_type', 'transmission', 'owner', 'mileage', 'engine', 'seats']
-        for field in required_fields:
-            if field not in data:
-                return jsonify({'error': f'Missing required field: {field}'}), 400
+        missing_fields = [field for field in required_fields if field not in data]
+
+        if missing_fields:
+            return jsonify({'error': f'Missing required fields: {", ".join(missing_fields)}'}), 400
 
         # Convert brand name to ID
         data['name'] = brand_mapping.get(data.get('name', ''), 0)
         if data['name'] == 0:
             return jsonify({'error': 'Invalid brand name'}), 400
 
-        # Create a DataFrame with the correct feature order
-        input_data = pd.DataFrame([{
-            'name': data['name'],
-            'year': data['year'],
-            'km_driven': data['km_driven'],
-            'fuel': data['fuel'],
-            'seller_type': data['seller_type'],
-            'transmission': data['transmission'],
-            'owner': data['owner'],
-            'mileage': data['mileage'],
-            'engine': data['engine'],
-            'seats': data['seats']
-        }])
-
-        # Ensure the feature order matches the training data
+        # Create DataFrame with correct order
         feature_order = ['name', 'year', 'km_driven', 'fuel', 'seller_type', 'transmission', 'owner', 'mileage', 'engine', 'seats']
-        input_data = input_data[feature_order]
+        input_data = pd.DataFrame([{key: data[key] for key in feature_order}])
 
         # Predict price
         predicted_price = model.predict(input_data)[0]
